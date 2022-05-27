@@ -30,7 +30,7 @@ No outputs, the build artifacts should be in the directory you gave.
 
 ```yaml
 - name: Run cargo deb
-  uses: actions/cargo-deb-arm@v1
+  uses: ClementTsang/cargo-deb-arm@v0.0.1-alpha
   with:
     args: --target aarch64-unknown-linux-gnu
     working-directory: test/hello_world
