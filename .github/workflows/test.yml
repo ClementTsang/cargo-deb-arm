@@ -40,11 +40,11 @@ jobs:
           cargo install cross
           cross build --release --verbose --target ${{ matrix.tuple.arch }}
 
-      - name: cargo deb
+      - name: Run cargo deb
         uses: ./
         with:
           args: --no-build --target ${{ matrix.tuple.arch }}
-          working-dir: test/hello_world
+          working-directory: test/hello_world
 
       - name: Check dpkg information
         run: |
@@ -64,11 +64,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: cargo deb
+      - name: Run cargo deb
         uses: ./
         with:
           args: --target ${{ matrix.tuple.arch }}
-          working-dir: test/hello_world
+          working-directory: test/hello_world
 
       - name: Check dpkg information
         run: |

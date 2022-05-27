@@ -1,21 +1,20 @@
-name: "cargo deb"
+name: "cargo-deb-arm"
 description: "Executes cargo deb for a specified ARM target."
+branding:
+  icon: box
+  color: "red"
 inputs:
   args:
     description: "Arguments to pass to cargo deb"
     required: true
     default: "--target=aarch64-unknown-linux-gnu"
-  working-dir:
+  working-directory:
     description: "The working directory. Relative to the repo."
     required: true
     default: "./"
-  architecture:
-    description: "The arm architecture used."
-    required: true
-    default: "aarch64-unknown-linux-gnu"
 runs:
   using: "docker"
   image: "Dockerfile"
   args:
     - ${{ inputs.args }}
-    - ${{ inputs.working-dir }}
+    - ${{ inputs.working-directory }}
