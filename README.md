@@ -1,6 +1,6 @@
-# cargo-deb-arm-docker
+# cargo-deb-arm
 
-Very simple Dockerfile containing cargo deb. Based on [cargo-deb-armv7-debian](https://github.com/ebbflow-io/cargo-deb-armv7-debian)
+Very simple Dockerfile + action containing cargo deb. Based on [cargo-deb-armv7-debian](https://github.com/ebbflow-io/cargo-deb-armv7-debian)
 and [rust-crosscompiler-arm](https://github.com/dlecan/rust-crosscompiler-arm).
 
 Currently only supports:
