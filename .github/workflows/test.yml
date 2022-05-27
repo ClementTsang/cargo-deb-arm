@@ -1,0 +1,47 @@
+# A simple test to test the functionality the action.
+
+name: test
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    branches: [master]
+
+jobs:
+  no-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install toolchain
+        uses: actions-rs/toolchain@88dc2356392166efad76775c878094f4e83ff746 # https://github.com/actions-rs/toolchain/commit/88dc2356392166efad76775c878094f4e83ff746
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          target: aarch64-unknown-linux-gnu
+
+      - uses: Swatinem/rust-cache@cb2cf0cc7c5198d3364b9630e2c3d457f160790c # 1.4.0
+        with:
+          cache-on-failure: true
+          working-directory: test/hello_world
+
+      - name: Build
+        run: |
+          cd test/hello_world
+          cargo install cross
+          cross build --release --verbose --target aarch64-unknown-linux-gnu
+
+      - name: cargo deb
+        uses: ./
+        with:
+          args: --no-build --target aarch64-unknown-linux-gnu
+          working-dir: test/hello_world
+
+      - name: Check dpkg information
+        run: |
+          cd test/hello_world
+          cp ./target/aarch64-unknown-linux-gnu/debian/hello_world_*.deb ./hello_world.deb
+          dpkg -I hello_world.deb

@@ -1,0 +1,13 @@
+[package]
+name = "hello_world"
+version = "0.1.0"
+edition = "2021"
+description = "Hello world!"
+license = "Apache-2.0"
+authors = ["Clement Tsang"]
+
+[package.metadata.deb]
+section = "utility"
+extended-description = """\
+This is just a simple hello world program!
+"""
