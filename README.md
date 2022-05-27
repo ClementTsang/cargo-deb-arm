@@ -1,12 +1,13 @@
-# cargo-deb-aarch64-unknown-linux-gnu
+# cargo-deb-arm-docker
 
 Very simple Dockerfile containing cargo deb. Based on [cargo-deb-armv7-debian](https://github.com/ebbflow-io/cargo-deb-armv7-debian)
 and [rust-crosscompiler-arm](https://github.com/dlecan/rust-crosscompiler-arm).
 
-Written originally for use in [bottom](https://github.com/ClementTsang/bottom).
+Currently only supports:
 
-## Inputs
+- aarch64-unknown-linux-gnu
+- armv7-unknown-linux-gnueabihf
 
-## Outputs
+Open to adding more as required.
 
-## Example Usage
+Originally written for use in [bottom](https://github.com/ClementTsang/bottom).

@@ -11,6 +11,12 @@ on:
 jobs:
   no-build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tuple:
+          - { arch: "aarch64-unknown-linux-gnu", dpkg: "arm64" }
+          - { arch: "armv7-unknown-linux-gnueabihf", dpkg: "armhf" }
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -21,7 +27,7 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-          target: aarch64-unknown-linux-gnu
+          target: ${{ matrix.tuple.arch }}
 
       - uses: Swatinem/rust-cache@cb2cf0cc7c5198d3364b9630e2c3d457f160790c # 1.4.0
         with:
@@ -32,16 +38,40 @@ jobs:
         run: |
           cd test/hello_world
           cargo install cross
-          cross build --release --verbose --target aarch64-unknown-linux-gnu
+          cross build --release --verbose --target ${{ matrix.tuple.arch }}
 
       - name: cargo deb
         uses: ./
         with:
-          args: --no-build --target aarch64-unknown-linux-gnu
+          args: --no-build --target ${{ matrix.tuple.arch }}
           working-dir: test/hello_world
 
       - name: Check dpkg information
         run: |
           cd test/hello_world
-          cp ./target/aarch64-unknown-linux-gnu/debian/hello_world_*.deb ./hello_world.deb
-          dpkg -I hello_world.deb
+          cp ./target/${{ matrix.tuple.arch }}/debian/hello_world_*.deb ./hello_world.deb
+          dpkg -I hello_world.deb | grep ${{ matrix.tuple.dpkg }} && echo "Found correct architecture"
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tuple:
+          - { arch: "aarch64-unknown-linux-gnu", dpkg: "arm64" }
+          - { arch: "armv7-unknown-linux-gnueabihf", dpkg: "armhf" }
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: cargo deb
+        uses: ./
+        with:
+          args: --target ${{ matrix.tuple.arch }}
+          working-dir: test/hello_world
+
+      - name: Check dpkg information
+        run: |
+          cd test/hello_world
+          cp ./target/${{ matrix.tuple.arch }}/debian/hello_world_*.deb ./hello_world.deb
+          dpkg -I hello_world.deb | grep ${{ matrix.tuple.dpkg }} && echo "Found correct architecture"
