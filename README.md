@@ -1,2 +1,3 @@
 # cargo-deb-aarch64-unknown-linux-gnu
-Dockerfile based on cross, containing cargo deb.
+
+Very simple Dockerfile containing cargo deb. Inspired by [cargo-deb-armv7-debian](https://github.com/ebbflow-io/cargo-deb-armv7-debian).

@@ -1,0 +1,21 @@
+# Regularly checks for updates to the base image and updates if needed.
+
+name: build
+
+on:
+  schedule:
+    - cron: "0 23 * * *"
+  workflow_dispatch:
+  push:
+    branches: [master]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
