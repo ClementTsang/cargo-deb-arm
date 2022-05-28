@@ -34,7 +34,7 @@ No outputs, the build artifacts should be in the directory you gave.
 
 ```yaml
 - name: Run cargo deb
-  uses: ClementTsang/cargo-deb-arm@v0.0.1-alpha
+  uses: ClementTsang/cargo-deb-arm@v0.0.2-alpha
   with:
     args: --target aarch64-unknown-linux-gnu
     working-directory: test/hello_world
@@ -68,6 +68,24 @@ docker run -t --rm --mount type=bind,source="$(pwd)",target=/volume \
 
 ## Known Problems
 
-It seems like the automatic dependency detection includes the cross-compilation libraries, which may not be desirable. I'm not sure how to resolve this at the moment, but a workaround is setting platform-specific `depends` overrides in your main project's `Cargo.toml`, and calling them as needed.
+It seems like the automatic dependency detection includes the cross-compilation libraries, which may not be desirable. I'm not sure how to resolve this at the moment, but a workaround is setting platform-specific `depends` overrides in your main project's `Cargo.toml`, and calling them as needed. For example:
+
+```toml
+# Cargo.toml
+
+[package.metadata.deb]
+section = "utility"
+
+[package.metadata.deb.variants.arm64]
+depends = "libc6:arm64 (>= 2.28)"
+```
+
+```yaml
+- name: Run cargo deb
+  uses: ClementTsang/cargo-deb-arm@v0.0.2-alpha
+  with:
+    args: --target aarch64-unknown-linux-gnu --variant arm64
+    working-directory: test/hello_world
+```
 
 See [cargo-deb's documentation](https://github.com/kornelski/cargo-deb#packagemetadatadebvariantsname) for more information.
