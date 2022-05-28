@@ -15,8 +15,8 @@ RUN echo "[target.armv7-unknown-linux-gnueabihf]\nobjcopy = { path = \"arm-linux
 RUN cargo install cargo-deb --version 1.38.0 --locked
 
 ENV CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABIHF_LINKER=arm-linux-gnueabihf-gcc \
-    CC_arm_unknown_linux_gnueabihf=arm-linux-gnueabihf-gcc \
-    CXX_arm_unknown_linux_gnueabihf=arm-linux-gnueabihf-g++
+    CC_armv7_unknown_linux_gnueabihf=arm-linux-gnueabihf-gcc \
+    CXX_armv7_unknown_linux_gnueabihf=arm-linux-gnueabihf-g++
 
 WORKDIR /volume
 COPY entry.sh /entry.sh

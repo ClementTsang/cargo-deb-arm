@@ -23,8 +23,8 @@ ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
     CXX_aarch64_unknown_linux_gnu=aarch64-linux-gnu-g++
 
 ENV CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABIHF_LINKER=arm-linux-gnueabihf-gcc \
-    CC_arm_unknown_linux_gnueabihf=arm-linux-gnueabihf-gcc \
-    CXX_arm_unknown_linux_gnueabihf=arm-linux-gnueabihf-g++
+    CC_armv7_unknown_linux_gnueabihf=arm-linux-gnueabihf-gcc \
+    CXX_armv7_unknown_linux_gnueabihf=arm-linux-gnueabihf-g++
 
 COPY entry.sh /entry.sh
 ENTRYPOINT ["/entry.sh"]
