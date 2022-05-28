@@ -68,7 +68,7 @@ docker run -t --rm --mount type=bind,source="$(pwd)",target=/volume \
 
 ## Known Problems
 
-It seems like the automatic dependency detection includes the cross-compilation libraries, which may not be desirable. I'm not sure how to resolve this at the moment, but a workaround is setting platform-specific `depends` overrides in your main project's `Cargo.toml`, and calling them as needed. For example:
+It seems like the automatic dependency detection includes the cross-compilation libraries, which may not be desirable. I'm not sure how to resolve this at the moment, but a (kinda bad) workaround is manually setting platform-specific `depends` overrides in your main project's `Cargo.toml`, and calling them as needed. For example:
 
 ```toml
 # Cargo.toml
