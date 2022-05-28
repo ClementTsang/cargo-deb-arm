@@ -17,6 +17,7 @@ RUN echo "[target.aarch64-unknown-linux-gnu]\nobjcopy = { path = \"aarch64-linux
 RUN echo "[target.armv7-unknown-linux-gnueabihf]\nobjcopy = { path = \"arm-linux-gnueabihf-objcopy\" }\nstrip = { path = \"arm-linux-gnueabihf-strip\" }" > ~/.cargo/config
 
 RUN cargo install cargo-deb --version 1.38.0 --locked
+RUN rm -rf ~/.cargo/registry
 
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
     CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc \
