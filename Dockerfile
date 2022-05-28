@@ -26,6 +26,5 @@ ENV CARGO_TARGET_ARMV7_UNKNOWN_LINUX_GNUEABIHF_LINKER=arm-linux-gnueabihf-gcc \
     CC_arm_unknown_linux_gnueabihf=arm-linux-gnueabihf-gcc \
     CXX_arm_unknown_linux_gnueabihf=arm-linux-gnueabihf-g++
 
-WORKDIR /volume
 COPY entry.sh /entry.sh
 ENTRYPOINT ["/entry.sh"]

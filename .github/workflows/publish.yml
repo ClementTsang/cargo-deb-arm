@@ -4,25 +4,30 @@ name: publish
 
 on:
   workflow_dispatch:
+  workflow_call:
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   publish:
+    needs: [test]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         tuple:
-          - { name: "cargo-deb-arm", filePath: "Dockerfile" }
+          - { name: "clementtsang/cargo-deb-arm", filePath: "Dockerfile" }
           - {
-              name: "cargo-deb-aarch64-unknown-linux-gnu",
+              name: "clementtsang/cargo-deb-aarch64-unknown-linux-gnu",
               filePath: "docker/Dockerfile.aarch64-unknown-linux-gnu",
             }
           - {
-              name: "cargo-deb-armv7-unknown-linux-gnueabihf",
+              name: "clementtsang/cargo-deb-armv7-unknown-linux-gnueabihf",
               filePath: "docker/Dockerfile.armv7-unknown-linux-gnueabihf",
             }
     permissions:
@@ -32,6 +37,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Get Docker image metadata
+        id: meta
+        uses: docker/metadata-action@69f6fc9d46f2f8bf0d5491e4aabe0bb8c6a4678a
+        with:
+          images: ${{ env.REGISTRY }}/${{ matrix.tuple.name }}
+          labels: |
+            org.opencontainers.image.description=A Docker container for cross-compilation with cargo deb on ARM.
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha
+
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
@@ -39,15 +55,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get Docker image metadata
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          tags: "latest"
-          images: ${{ env.REGISTRY }}/${{ matrix.tuple.name }}
-
       - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8
         with:
           context: .
           file: ${{ matrix.tuple.filePath }}

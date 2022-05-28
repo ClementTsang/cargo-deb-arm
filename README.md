@@ -1,6 +1,6 @@
 # cargo-deb-arm
 
-Very simple Dockerfile + action containing cargo deb. Based on [cargo-deb-armv7-debian](https://github.com/ebbflow-io/cargo-deb-armv7-debian)
+A very simple Dockerfile + action for ARM cross-compilation with cargo deb. Based on [cargo-deb-armv7-debian](https://github.com/ebbflow-io/cargo-deb-armv7-debian)
 and [rust-crosscompiler-arm](https://github.com/dlecan/rust-crosscompiler-arm).
 
 Currently only supports:
@@ -47,11 +47,21 @@ See the [test workflow](./.github/workflows/test.yml) for a more complete exampl
 You can also directly use the Dockerfile (which is also published as a package). For example:
 
 ```bash
+docker pull ghcr.io/clementtsang/cargo-deb-arm:latest
 
+docker run -t --rm --mount type=bind,source="$(pwd)",target=/volume \
+  ghcr.io/clementtsang/cargo-deb-arm \
+  "--target ${{ matrix.triple.arch }}" \
+  "/volume/test/hello_world"
 ```
 
 More specialized Dockerfiles are also included and published (see [`./docker`](./docker/)). For example:
 
 ```bash
+docker pull ghcr.io/clementtsang/cargo-deb-aarch64-unknown-linux-gnu:latest
 
+docker run -t --rm --mount type=bind,source="$(pwd)",target=/volume \
+  ghcr.io/clementtsang/cargo-deb-aarch64-unknown-linux-gnu \
+  "--target ${{ matrix.triple.arch }}" \
+  "/volume/test/hello_world"
 ```
