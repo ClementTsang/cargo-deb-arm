@@ -5,8 +5,8 @@ RUN dpkg --add-architecture armhf
 RUN apt-get update
 
 RUN apt-get install -qy dpkg-dev
-RUN apt-get install -qy g++-aarch64-linux-gnu libc6-dev-arm64-cross binutils-aarch64-linux-gnu
-RUN apt-get install -qy g++-arm-linux-gnueabihf libc6-dev-armhf-cross binutils-arm-linux-gnueabihf
+RUN apt-get install -qy g++-aarch64-linux-gnu binutils-aarch64-linux-gnu
+RUN apt-get install -qy g++-arm-linux-gnueabihf binutils-arm-linux-gnueabihf
 
 RUN rustup target add aarch64-unknown-linux-gnu
 RUN rustup target add armv7-unknown-linux-gnueabihf

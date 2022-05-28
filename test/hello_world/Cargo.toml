@@ -5,9 +5,17 @@ edition = "2021"
 description = "Hello world!"
 license = "Apache-2.0"
 authors = ["Clement Tsang"]
+readme = "README.md"
 
 [package.metadata.deb]
 section = "utility"
+assets = [["README.md", "usr/share/doc/hello_world", "644"]]
 extended-description = """\
 This is just a simple hello world program!
 """
+
+[package.metadata.deb.variants.arm64]
+depends = "libc6:arm64 (>= 2.28)"
+
+[package.metadata.deb.variants.armhf]
+depends = "libc6:armhf (>= 2.28)"

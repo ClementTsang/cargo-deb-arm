@@ -41,12 +41,13 @@ jobs:
 
       - name: Run Dockerfile
         run: |
-          docker run -t --rm --mount type=bind,source="$(pwd)",target=/volume test "--target ${{ matrix.triple.arch }}" "/volume/test/hello_world"
+          docker run -t --rm --mount type=bind,source="$(pwd)",target=/volume test "--target ${{ matrix.triple.arch }} --variant ${{ matrix.triple.dpkg }}" "/volume/test/hello_world"
 
       - name: Check dpkg information
         run: |
           cd test/hello_world
-          cp ./target/${{ matrix.triple.arch }}/debian/hello_world_*.deb ./hello_world.deb
+          cp ./target/${{ matrix.triple.arch }}/debian/hello_world*.deb ./hello_world.deb
+          dpkg -I hello_world.deb
           dpkg -I hello_world.deb | grep ${{ matrix.triple.dpkg }} && echo "Found correct architecture"
 
   action-no-build:

@@ -65,3 +65,9 @@ docker run -t --rm --mount type=bind,source="$(pwd)",target=/volume \
   "--target ${{ matrix.triple.arch }}" \
   "/volume/test/hello_world"
 ```
+
+## Known Problems
+
+It seems like the automatic dependency detection includes the cross-compilation libraries, which may not be desirable. I'm not sure how to resolve this at the moment, but a workaround is setting platform-specific `depends` overrides in your main project's `Cargo.toml`, and calling them as needed.
+
+See [cargo-deb's documentation](https://github.com/kornelski/cargo-deb#packagemetadatadebvariantsname) for more information.
