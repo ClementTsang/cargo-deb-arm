@@ -9,7 +9,9 @@ on:
     branches: [master]
 
 jobs:
-  no-build:
+  
+
+  action-no-build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -52,7 +54,7 @@ jobs:
           cp ./target/${{ matrix.tuple.arch }}/debian/hello_world_*.deb ./hello_world.deb
           dpkg -I hello_world.deb | grep ${{ matrix.tuple.dpkg }} && echo "Found correct architecture"
 
-  build:
+  action-build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
