@@ -27,7 +27,12 @@ jobs:
           base-image: rust:slim-buster
           image: clementtsang/cargo-deb-arm
 
-  update:
+  test:
     needs: check-update
+    if: ${{ needs.check-update.outputs.needs_update == 'true' }}
+    uses: ./.github/workflows/test.yml
+
+  update:
+    needs: [test, check-update]
     if: ${{ needs.check-update.outputs.needs_update == 'true' }}
     uses: ./.github/workflows/publish.yml
