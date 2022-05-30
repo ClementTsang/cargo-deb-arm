@@ -1,0 +1,18 @@
+# Tests and publishes the image.
+
+name: "Test and publish"
+
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  publish:
+    needs: [test]
+    uses: ./.github/workflows/publish.yml

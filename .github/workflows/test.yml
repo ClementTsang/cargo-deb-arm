@@ -1,6 +1,6 @@
 # A simple test to test the functionality the action.
 
-name: test
+name: "Test"
 
 on:
   pull_request:

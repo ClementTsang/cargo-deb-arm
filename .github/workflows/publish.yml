@@ -1,6 +1,6 @@
 # Publishes the image.
 
-name: publish
+name: "Publish"
 
 on:
   workflow_dispatch:
@@ -11,11 +11,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
-
   publish:
-    needs: [test]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

@@ -1,6 +1,6 @@
 # Regularly checks for updates to the base image.
 
-name: update
+name: "Update"
 
 on:
   schedule:
@@ -20,14 +20,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Docker Image Update Checker
+      - name: Check if the base image is updated (note this updates all images)
         id: base_update_check
-        uses: lucacome/docker-image-update-checker@v1.1.0
+        uses: giggio/docker-image-update-checker@5be041c50dbfdcd5b81a0d4590f14f8c9bbf2cec
         with:
           base-image: rust:slim-buster
-          image: clementtsang/cargo-deb-arm
+          image: ghcr.io/clementtsang/cargo-deb-arm
+
+  test:
+    needs: check-update
+    if: ${{ needs.check-update.outputs.needs_update == 'true' }}
+    uses: ./.github/workflows/test.yml
 
   update:
-    needs: check-update
+    needs: [test, check-update]
     if: ${{ needs.check-update.outputs.needs_update == 'true' }}
     uses: ./.github/workflows/publish.yml
