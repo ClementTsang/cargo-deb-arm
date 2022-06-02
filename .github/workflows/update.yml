@@ -20,19 +20,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Check if the base image is updated (note this updates all images)
-        id: base_update_check
-        uses: giggio/docker-image-update-checker@5be041c50dbfdcd5b81a0d4590f14f8c9bbf2cec
+      - name: Run
+        id: run
+        uses: ClementTsang/docker-check-base-image-diff@v0.0.1-alpha
         with:
-          base-image: rust:slim-buster
-          image: ghcr.io/clementtsang/cargo-deb-arm
+          base-image: docker://rust:slim-buster
+          derived-image: docker://ghcr.io/clementtsang/cargo-deb-arm
 
   test:
     needs: check-update
-    if: ${{ needs.check-update.outputs.needs_update == 'true' }}
+    if: ${{ needs.check-update.outputs.differs == 'true' }}
     uses: ./.github/workflows/test.yml
 
   update:
     needs: [test, check-update]
-    if: ${{ needs.check-update.outputs.needs_update == 'true' }}
+    if: ${{ needs.check-update.outputs.differs == 'true' }}
     uses: ./.github/workflows/publish.yml
