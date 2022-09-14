@@ -15,7 +15,7 @@ jobs:
   check-update:
     runs-on: ubuntu-latest
     outputs:
-      needs-updating: ${{ steps.base_update_check.outputs.needs-updating }}
+      needs-updating: ${{ steps.run.outputs.differs }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
