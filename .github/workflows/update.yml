@@ -15,7 +15,7 @@ jobs:
   check-update:
     runs-on: ubuntu-latest
     outputs:
-      needs_update: ${{ steps.base_update_check.outputs.needs-updating }}
+      needs-updating: ${{ steps.base_update_check.outputs.needs-updating }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -29,10 +29,10 @@ jobs:
 
   test:
     needs: check-update
-    if: ${{ needs.check-update.outputs.differs == 'true' }}
+    if: ${{ needs.check-update.outputs.needs-updating == 'true' }}
     uses: ./.github/workflows/test.yml
 
   update:
     needs: [test, check-update]
-    if: ${{ needs.check-update.outputs.differs == 'true' }}
+    if: ${{ needs.check-update.outputs.needs-updating == 'true' }}
     uses: ./.github/workflows/publish.yml
