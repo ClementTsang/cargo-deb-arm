@@ -34,5 +34,5 @@ jobs:
 
   update:
     needs: [test, check-update]
-    if: ${{ needs.check-update.outputs.needs-updating == 'true' }}
+    if: ${{ needs.check-update.outputs.needs-updating == 'true' && github.event.ref == 'main' }}
     uses: ./.github/workflows/publish.yml
