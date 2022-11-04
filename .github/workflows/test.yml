@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   workflow_call:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   dockerfile-simple:
