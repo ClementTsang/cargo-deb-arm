@@ -44,7 +44,7 @@ See the [test workflow](./.github/workflows/test.yml) for a more complete exampl
 
 ## Dockerfile
 
-You can also directly use the Dockerfile (which is also published as a package). For example:
+You can also directly use the Dockerfile (which is published as a package). For example:
 
 ```bash
 docker pull ghcr.io/clementtsang/cargo-deb-arm:latest
