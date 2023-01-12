@@ -15,7 +15,7 @@ jobs:
   check-update:
     runs-on: ubuntu-latest
     outputs:
-      needs-updating: ${{ steps.run.outputs.differs }}
+      needs-updating: ${{ steps.check.outputs.differs }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -28,8 +28,10 @@ jobs:
           derived-image: docker://ghcr.io/clementtsang/cargo-deb-arm
           
       - name: Check
+        id: check
         run: |
           echo Should update: ${{ steps.run.outputs.differs }}
+          echo "differs=${{ steps.run.outputs.differs }}" >> $GITHUB_OUTPUT
 
   test:
     needs: check-update
