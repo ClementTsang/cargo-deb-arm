@@ -26,6 +26,10 @@ jobs:
         with:
           base-image: docker://rust:slim-buster
           derived-image: docker://ghcr.io/clementtsang/cargo-deb-arm
+          
+      - name: Check
+        run: |
+          echo Should update: ${{ steps.run.outputs.differs }}
 
   test:
     needs: check-update
