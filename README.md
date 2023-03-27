@@ -66,6 +66,8 @@ docker run -t --rm --mount type=bind,source="$(pwd)",target=/volume \
   "/volume/test/hello_world"
 ```
 
+Note that the `latest` tag generally points to the latest *stable* Rust version. When a new stable Rust version comes out, this is usually automatically updated as the corresponding Docker container updates.
+
 ## Known Problems
 
 It seems like the automatic dependency detection includes the cross-compilation libraries, which may not be desirable. I'm not sure how to resolve this at the moment, but a (kinda bad) workaround is manually setting platform-specific `depends` overrides in your main project's `Cargo.toml`, and calling them as needed. For example:
