@@ -33,7 +33,7 @@ jobs:
             }
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build Dockerfile
         run: |
@@ -60,7 +60,7 @@ jobs:
           - { arch: "armv7-unknown-linux-gnueabihf", dpkg: "armhf" }
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Rust toolchain
         uses: dtolnay/rust-toolchain@ba37adf8f94a7d9affce79bd3baff1b9e3189c33 # https://github.com/dtolnay/rust-toolchain/commit/ba37adf8f94a7d9affce79bd3baff1b9e3189c33
@@ -101,7 +101,7 @@ jobs:
           - { arch: "armv7-unknown-linux-gnueabihf", dpkg: "armhf" }
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run cargo deb
         uses: ./
