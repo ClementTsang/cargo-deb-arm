@@ -4,7 +4,7 @@ name: "Update"
 
 on:
   schedule:
-    - cron: "0 23 * * *"
+    - cron: "0 23 * * 2"
   workflow_dispatch:
 
 env:
@@ -26,7 +26,7 @@ jobs:
         with:
           base-image: docker://rust:slim-buster
           derived-image: docker://ghcr.io/clementtsang/cargo-deb-arm
-          
+
       - name: Check
         run: |
           echo Should update: ${{ steps.run.outputs.differs }}
