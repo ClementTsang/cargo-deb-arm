@@ -12,7 +12,7 @@ RUN mkdir -p ~/.cargo/
 RUN touch ~/.cargo/config
 RUN echo "[target.aarch64-unknown-linux-gnu]\nobjcopy = { path = \"aarch64-linux-gnu-objcopy\" }\nstrip = { path = \"aarch64-linux-gnu-strip\" }\n" > ~/.cargo/config
 
-RUN cargo install cargo-deb --version 2.2.0 --locked
+RUN cargo install cargo-deb --version 2.4.0 --locked
 RUN rm -rf ~/.cargo/registry
 
 ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc \
