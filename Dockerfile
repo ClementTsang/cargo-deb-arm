@@ -1,4 +1,4 @@
-FROM rust:slim-buster
+FROM rust:slim-bullseye
 
 RUN dpkg --add-architecture arm64
 RUN dpkg --add-architecture armhf
