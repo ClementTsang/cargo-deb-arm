@@ -46,7 +46,7 @@ jobs:
       - name: Check dpkg information
         run: |
           cd test/hello_world
-          cp ./target/${{ matrix.triple.arch }}/debian/hello-world*.deb ./hello_world.deb
+          cp ./target/debian/hello-world*.deb ./hello_world.deb
           dpkg -I hello_world.deb
           dpkg -I hello_world.deb | grep ${{ matrix.triple.dpkg }} && echo "Found correct architecture"
 
@@ -88,7 +88,7 @@ jobs:
       - name: Check dpkg information
         run: |
           cd test/hello_world
-          cp ./target/${{ matrix.tuple.arch }}/debian/hello-world_*.deb ./hello_world.deb
+          cp ./target/debian/hello-world_*.deb ./hello_world.deb
           dpkg -I hello_world.deb | grep ${{ matrix.tuple.dpkg }} && echo "Found correct architecture"
 
   action-build:
@@ -112,5 +112,5 @@ jobs:
       - name: Check dpkg information
         run: |
           cd test/hello_world
-          cp ./target/${{ matrix.tuple.arch }}/debian/hello-world_*.deb ./hello_world.deb
+          cp ./target/debian/hello-world_*.deb ./hello_world.deb
           dpkg -I hello_world.deb | grep ${{ matrix.tuple.dpkg }} && echo "Found correct architecture"
