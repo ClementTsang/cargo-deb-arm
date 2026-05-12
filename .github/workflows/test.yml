@@ -9,6 +9,71 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
+jobs:
+  dockerfile-simple:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        triple:
+          - {
+              filePath: "Dockerfile",
+              arch: "aarch64-unknown-linux-gnu",
+              dpkg: "arm64",
+            }
+          - {
+              filePath: "docker/Dockerfile.aarch64-unknown-linux-gnu",
+              arch: "aarch64-unknown-linux-gnu",
+              dpkg: "arm64",
+            }
+          - {
+              filePath: "docker/Dockerfile.armv7-unknown-linux-gnueabihf",
+              arch: "armv7-unknown-linux-gnueabihf",
+              dpkg: "armhf",
+            }
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Build Dockerfile
+        run: |
+          docker build -t test -f ${{ matrix.triple.filePath }} .
+
+      - name: Run Dockerfile
+        run: |
+          docker run -t --rm --mount type=bind,source="$(pwd)",target=/volume test "--target ${{ matrix.triple.arch }} --variant ${{ matrix.triple.dpkg }}" "/volume/test/hello_world"
+
+      - name: Check dpkg information
+        run: |
+          cd test/hello_world
+          cp ./target/debian/hello-world*.deb ./hello_world.deb
+          dpkg -I hello_world.deb
+          dpkg -I hello_world.deb | grep ${{ matrix.triple.dpkg }} && echo "Found correct architecture"
+
+  action-no-build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tuple:
+          - { arch: "aarch64-unknown-linux-gnu", dpkg: "arm64" }
+          - { arch: "armv7-unknown-linux-gnueabihf", dpkg: "armhf" }
+    steps:
+      - name: Checkout repository
+        # A simple test to test the functionality the action.
+
+name: "Test"
+
+on:
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+  push:
+    branches: [main]
+
 jobs:
   dockerfile-simple:
     runs-on: ubuntu-latest
@@ -61,6 +126,54 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9
+        with:
+          toolchain: stable
+          target: ${{ matrix.tuple.arch }}
+
+      - name: Build
+        run: |
+          cd test/hello_world
+          cargo install cross
+          cross build --release --verbose --target ${{ matrix.tuple.arch }}
+
+      - name: Run cargo deb
+        uses: ./
+        with:
+          args: --no-build --target ${{ matrix.tuple.arch }}
+          working-directory: test/hello_world
+
+      - name: Check dpkg information
+        run: |
+          cd test/hello_world
+          cp ./target/debian/hello-world_*.deb ./hello_world.deb
+          dpkg -I hello_world.deb | grep ${{ matrix.tuple.dpkg }} && echo "Found correct architecture"
+
+  action-build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tuple:
+          - { arch: "aarch64-unknown-linux-gnu", dpkg: "arm64" }
+          - { arch: "armv7-unknown-linux-gnueabihf", dpkg: "armhf" }
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run cargo deb
+        uses: ./
+        with:
+          args: --target ${{ matrix.tuple.arch }}
+          working-directory: test/hello_world
+
+      - name: Check dpkg information
+        run: |
+          cd test/hello_world
+          cp ./target/debian/hello-world_*.deb ./hello_world.deb
+          dpkg -I hello_world.deb | grep ${{ matrix.tuple.dpkg }} && echo "Found correct architecture"
 
       - name: Set up Rust toolchain
         uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9
