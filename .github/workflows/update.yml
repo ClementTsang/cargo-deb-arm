@@ -7,6 +7,9 @@ on:
     - cron: "0 23 * * 2"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -36,7 +39,10 @@ jobs:
     if: ${{ needs.check-update.outputs.needs_update == 'true' }}
     uses: ./.github/workflows/test.yml
 
-  update:
+  publish-update:
+    permissions:
+      contents: read
+      packages: write
     needs: [test, check-update]
     if: ${{ needs.check-update.outputs.needs_update == 'true' && (github.head_ref == 'main' || github.ref_name == 'main') }}
     uses: ./.github/workflows/publish.yml
