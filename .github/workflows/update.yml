@@ -1,6 +1,8 @@
 # Regularly checks for updates to the base image.
 
 name: "Update"
+permissions:
+  contents: read 
 
 on:
   schedule:
@@ -36,7 +38,10 @@ jobs:
     if: ${{ needs.check-update.outputs.needs_update == 'true' }}
     uses: ./.github/workflows/test.yml
 
-  update:
+  publish-update:
+    permissions:
+      contents: read
+      packages: write
     needs: [test, check-update]
     if: ${{ needs.check-update.outputs.needs_update == 'true' && (github.head_ref == 'main' || github.ref_name == 'main') }}
     uses: ./.github/workflows/publish.yml
