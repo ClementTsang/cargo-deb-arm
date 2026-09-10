@@ -1,4 +1,4 @@
-FROM rust:slim-bullseye
+FROM rust:slim-bookworm
 
 RUN dpkg --add-architecture arm64
 RUN dpkg --add-architecture armhf
