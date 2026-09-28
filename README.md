@@ -3,12 +3,14 @@
 A very simple Dockerfile + action for ARM cross-compilation with cargo deb. Based on [cargo-deb-armv7-debian](https://github.com/ebbflow-io/cargo-deb-armv7-debian)
 and [rust-crosscompiler-arm](https://github.com/dlecan/rust-crosscompiler-arm).
 
-Currently only supports:
+Currently supports:
 
 - aarch64-unknown-linux-gnu
 - armv7-unknown-linux-gnueabihf
 
 Open to adding more as required, feel free to submit PRs + tests.
+
+---
 
 Originally written for use in [bottom](https://github.com/ClementTsang/bottom).
 
